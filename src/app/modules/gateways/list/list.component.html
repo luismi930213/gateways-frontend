@@ -1,0 +1,43 @@
+<div class="tui-row tui-space_top-5">
+    <div class="tui-col_md-12">
+        <tui-island textAlign="center">
+            <h3 class="tui-island__title">Gateways </h3>
+            <button tuiButton (click)="showDialog()" appearance="flat" size="s" icon="tuiIconPlus" title="Add"
+                shape="rounded">
+                Add
+            </button>
+            <div class="tui-island__paragraph">
+                <table tuiTable [columns]="columns" class="table">
+                    <thead>
+                        <tr tuiThGroup>
+                            <th *tuiHead="'no'" tuiTh [sorter]="null">#</th>
+                            <th *tuiHead="'name'" tuiTh [sorter]="null">Name</th>
+                            <th *tuiHead="'ip'" tuiTh [sorter]="null">IP</th>
+                            <th *tuiHead="'actions'" tuiTh [sorter]="null"></th>
+                        </tr>
+                    </thead>
+                    <tbody tuiTbody [data]="gateways">
+                        <tr>
+                            <td *ngIf="!gateways.length" colspan="4">
+                                <h3>No data found!</h3>
+                            </td>
+                        </tr>
+                        <tr *tuiRow="let item of gateways; let index = index" tuiTr>
+                            <td *tuiCell="'no'" tuiTd>{{index + 1}}</td>
+                            <td *tuiCell="'name'" tuiTd>{{item.name}}</td>
+                            <td *tuiCell="'ip'" tuiTd> {{item.ip}} </td>
+                            <td *tuiCell="'actions'" tuiTd>
+                                <button tuiButton appearance="flat" size="s" icon="tuiIconEyeOpen" title="Details"
+                                    shape="rounded" (click)="remove(item)"></button>
+                                <button tuiButton appearance="flat" size="s" icon="tuiIconEdit" title="Edit"
+                                    shape="rounded" (click)="showDialog(item)"></button>
+                                <button tuiButton appearance="flat" size="s" icon="tuiIconTrash" title="Remove"
+                                    shape="rounded" (click)="remove(item)"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </tui-island>
+    </div>
+</div>

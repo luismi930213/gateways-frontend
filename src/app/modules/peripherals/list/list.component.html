@@ -1,0 +1,47 @@
+<div class="tui-row tui-space_top-5">
+    <div class="tui-col_md-12">
+        <tui-island textAlign="center">
+            <h3 class="tui-island__title">Peripherals </h3>
+            <button tuiButton (click)="showDialog()" appearance="flat" size="s" icon="tuiIconPlus" title="Add"
+                shape="rounded">
+                Add
+            </button>
+            <div class="tui-island__paragraph">
+                <table tuiTable [columns]="columns">
+                    <thead>
+                        <tr tuiThGroup>
+                            <th *tuiHead="'no'" tuiTh [sorter]="null">#</th>
+                            <th *tuiHead="'Gateway'" tuiTh [sorter]="null">Gateway</th>
+                            <th *tuiHead="'vendor'" tuiTh [sorter]="null">Vendor</th>
+                            <th *tuiHead="'date'" tuiTh [sorter]="null">Date</th>
+                            <th *tuiHead="'status'" tuiTh [sorter]="null">Status</th>
+                            <th *tuiHead="'actions'" tuiTh [sorter]="null"></th>
+                        </tr>
+                    </thead>
+                    <tbody tuiTbody [data]="peripherals">
+                        <tr>
+                            <td *ngIf="!peripherals.length" colspan="6">
+                                <h3>No data found!</h3>
+                            </td>
+                        </tr>
+                        <tr *tuiRow="let item of peripherals; let index = index" tuiTr>
+                            <td *tuiCell="'no'" tuiTd>{{index + 1}}</td>
+                            <td *tuiCell="'Gateway'" tuiTd>{{item?.Gateway?.name}}</td>
+                            <td *tuiCell="'vendor'" tuiTd>{{item.vendor}}</td>
+                            <td *tuiCell="'date'" tuiTd> {{item.date | date: 'dd/MM/yyyy' }} </td>
+                            <td *tuiCell="'status'" tuiTd>
+                                <div [ngClass]="item.status"> {{item.status}}</div>
+                            </td>
+                            <td *tuiCell="'actions'" tuiTd>
+                                <button tuiButton appearance="flat" size="s" icon="tuiIconEdit" title="Edit"
+                                    shape="rounded" (click)="showDialog(item)"></button>
+                                <button tuiButton appearance="flat" size="s" icon="tuiIconTrash" title="Remove"
+                                    shape="rounded" (click)="remove(item)"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </tui-island>
+    </div>
+</div>

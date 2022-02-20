@@ -1,0 +1,63 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
+.title {
+    font: var(--tui-font-heading-4);
+    margin: 0 0 @space * 4;
+ 
+    &_size_s {
+        font: var(--tui-font-heading-6);
+        margin: 0 0 @space * 3;
+    }
+}
+ 
+.text {
+    font: var(--tui-font-text-m);
+    margin: 0 0 @space * 6;
+}
+
+.image {
+    display: block;
+    max-width: ~'calc(100% + 2.5rem)';
+    margin: -1.25rem -1.25rem 1.25rem;
+    border-radius: var(--tui-radius-l) var(--tui-radius-l) 0 0;
+}
+
+
+td,
+th {
+    white-space: nowrap;
+    border-color: transparent;
+    border-right-color: var(--tui-base-04);
+
+    &:last-child {
+        border-right-color: transparent;
+    }
+}
+
+tbody {
+    border-color: transparent;
+}
+
+tr:nth-child(even) td {
+    background: var(--tui-base-02);
+}
+
+.online,
+.offline {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    &:before {
+        content: '';
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 100%;
+        margin-right: 0.5rem;
+        background: var(--tui-base-04);
+    }
+}
+
+.online:before {
+    background: var(--tui-success-fill);
+}
