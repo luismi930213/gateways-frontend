@@ -1,8 +1,7 @@
-import { IBaseModel } from "../interfaces/IBaseModel";
 import { Peripheral } from "./peripheral";
 
-export class Gateway implements IBaseModel {
-    id: number = 0;
+export class Gateway {
+    id: string = '';
     name?: string;
     ip?: string;
     Peripherals?: Peripheral[];

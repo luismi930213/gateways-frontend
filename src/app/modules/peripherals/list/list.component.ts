@@ -23,7 +23,7 @@ export class ListComponent implements OnDestroy {
     @Inject(Injector) private readonly injector: Injector,
     private service: PeripheralService
   ) {
-    this.columns = ['no', 'Gateway', 'vendor', 'createdAt', 'status', 'actions']
+    this.columns = ['no', 'Gateway', 'vendor', 'status', 'createdAt', 'updatedAt', 'actions']
   }
 
   remove(item: Peripheral) {
@@ -37,7 +37,7 @@ export class ListComponent implements OnDestroy {
   private readonly dialog = (data?: Peripheral) => this.dialogService.open<Peripheral>(
     new PolymorpheusComponent(AddComponent, this.injector),
     {
-      dismissible: false,
+      dismissible: true,
       data,
       label: !!data ? 'Edit Peripheral' : 'New Peripheral',
     },

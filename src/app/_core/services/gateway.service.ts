@@ -25,7 +25,7 @@ export class GatewayService {
         return this.http.get<any>(this.getUrl()).pipe(map(m => m.rows));
     }
 
-    get(id: number): Observable<any> {
+    get(id: string): Observable<any> {
         return this.http.get<Gateway>(this.getUrl() + '/' + id);
     }
 
@@ -61,7 +61,7 @@ export class GatewayService {
         }
     }
 
-    delete(id: number) {
+    delete(id: string) {
         return this.http.delete<Gateway>(this.getUrl() + '/' + id)
             .pipe(
                 map(m => {
