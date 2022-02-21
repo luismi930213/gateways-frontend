@@ -10,12 +10,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiButtonModule, TuiTextfieldControllerModule, TuiDataListModule } from '@taiga-ui/core';
 import { GatewayService } from 'src/app/_core/services/gateway.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
     GatewaysComponent,
     ListComponent,
     AddComponent,
+    DetailsComponent,
   ],
   imports: [
     HttpClientModule,

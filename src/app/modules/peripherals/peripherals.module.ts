@@ -5,6 +5,7 @@ import { ListComponent } from './list/list.component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { PeripheralsRoutingModule } from './peripherals-routing.module';
 import {
+  TuiBadgeModule,
   TuiDataListWrapperModule,
   TuiFieldErrorModule,
   TuiInputDateModule,
@@ -21,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddComponent } from './add/add.component';
 import { PeripheralService } from 'src/app/_core/services/peripheral.service';
 import { HttpClientModule } from '@angular/common/http';
+import { GatewayService } from 'src/app/_core/services/gateway.service';
 
 @NgModule({
   declarations: [
@@ -43,10 +45,12 @@ import { HttpClientModule } from '@angular/common/http';
     TuiInputDateModule,
     ReactiveFormsModule,
     TuiFieldErrorModule,
-    HttpClientModule
+    HttpClientModule,
+    TuiBadgeModule
   ],
   providers: [
-    PeripheralService
+    PeripheralService,
+    GatewayService,
   ]
 })
 export class PeripheralsModule { }

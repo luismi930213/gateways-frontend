@@ -7,4 +7,6 @@ export class Peripheral implements IBaseModel {
     date?: Date;
     status: string = 'online';
     Gateway?: Gateway;
+    createdAt: Date = new Date();
+    updatedAt: Date = new Date();
 }

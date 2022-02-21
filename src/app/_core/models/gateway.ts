@@ -5,5 +5,7 @@ export class Gateway implements IBaseModel {
     id: number = 0;
     name?: string;
     ip?: string;
-    peripherals?: Peripheral[];
+    Peripherals?: Peripheral[];
+    createdAt: Date = new Date();
+    updatedAt: Date = new Date();
 }

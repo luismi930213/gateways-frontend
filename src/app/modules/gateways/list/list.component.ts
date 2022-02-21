@@ -1,19 +1,23 @@
-import { Component, Inject, Injector, OnInit } from '@angular/core';
+import { Component, Inject, Injector, OnDestroy } from '@angular/core';
 import { TuiDialogService } from '@taiga-ui/core';
 import { Gateway } from 'src/app/_core/models/gateway';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddComponent } from '../add/add.component';
 import { GatewayService } from 'src/app/_core/services/gateway.service';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DetailsComponent } from '../details/details.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.less']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnDestroy {
 
   columns: any;
-  gateways: Gateway[] = [];
+  gateways$: Observable<Gateway[]> = this.service.all()
+  destroy$ = new Subject()
 
   constructor(
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
@@ -23,40 +27,51 @@ export class ListComponent implements OnInit {
     this.columns = ['no', 'name', 'ip', 'actions'];
   }
 
-
-  ngOnInit(): void {
-    this.load();
-  }
-
   remove(item: Gateway) {
-    this.service.delete(item.id).subscribe(data => {
-      this.load();
-    })
-  }
-  
-  private load(){
-    this.service.all().subscribe(data => {
-      this.gateways = data.rows
-    })
+    this.service.delete(item.id).subscribe(() => this.load());
   }
 
-  private readonly dialog = this.dialogService.open<Gateway>(
+  load() {
+    this.gateways$ = this.service.all()
+  }
+
+  private readonly dialog = (data?: Gateway) => this.dialogService.open<Gateway>(
     new PolymorpheusComponent(AddComponent, this.injector),
     {
-      dismissible: false,
-      label: 'Manage Gateways',
+      dismissible: true,
+      data,
+      label: !!data ? 'Edit Gateway' : 'New Gateway',
+    },
+  );
+
+  private readonly dialogDetails = (data: Gateway) => this.dialogService.open<Gateway>(
+    new PolymorpheusComponent(DetailsComponent, this.injector),
+    {
+      dismissible: true,
+      data,
+      label: 'Details',
     },
   );
 
   showDialog(item?: Gateway) {
-    this.dialog.subscribe({
-      next: data => {
-        console.info('Dialog emitted data = ' + data);
-      },
-      complete: () => {
-        console.info('Dialog closed');
-      },
-    });
+    this.dialog(item)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.load());
   }
 
+  showDetailsDialog(item: Gateway) {
+    this.service.get(item.id).subscribe(data => {
+      console.log(data);
+      return data
+    })
+
+    this.dialogDetails(item)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.service.get(item.id));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.unsubscribe
+  }
 }
