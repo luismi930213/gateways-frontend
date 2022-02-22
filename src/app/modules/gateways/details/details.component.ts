@@ -12,11 +12,13 @@ import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 export class DetailsComponent {
 
   item: Gateway = new Gateway();
+  columns: any;
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
     private readonly context: TuiDialogContext<Gateway, Gateway>,
   ) {
     this.item = this.context.data
+    this.columns = ['no','vendor', 'status', 'createdAt', 'updatedAt']
   }
 
 }

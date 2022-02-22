@@ -1,23 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TuiDialogContext } from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Gateway } from 'src/app/_core/models/gateway';
 import { GatewayService } from 'src/app/_core/services/gateway.service';
 import { PeripheralService } from 'src/app/_core/services/peripheral.service';
 import { Peripheral } from 'src/app/_core/models/peripheral';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   gateways$: Observable<Gateway[]>;
   statuses = ['online', 'offline'];
+  destroy$ = new Subject();
 
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
@@ -53,12 +55,22 @@ export class AddComponent implements OnInit {
 
   submit() {
     const obj = this.form.value
-    obj.gateway_id = obj.Gateway.id
-    delete obj.Gateway
+    if (obj.Gateway) {
+      obj.gateway_id = obj.Gateway.id
+      delete obj.Gateway
+    }
     this.service.save(obj)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
+        console.log(data);
+
         this.context.completeWith(data)
       })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.unsubscribe();
   }
 
 }

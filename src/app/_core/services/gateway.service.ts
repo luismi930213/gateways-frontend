@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Gateway } from '../models/gateway';
-import { catchError, map } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
 @Injectable({
     providedIn: 'root'
@@ -33,29 +33,23 @@ export class GatewayService {
         if (item.id) {
             return this.http.put<Gateway>(this.getUrl() + '/' + item.id, item)
                 .pipe(
-                    map(m => {
-                        this.notificationsService
-                            .show('Great! Gateway edited successfully', { status: TuiNotification.Success }).subscribe()
-                        return m
-                    }),
+                    tap(() => this.notificationsService
+                        .show('Great! Gateway edited successfully', { status: TuiNotification.Success }).subscribe()),
                     catchError((err) => {
                         this.notificationsService
                             .show(err.error.errors[0].msg, { status: TuiNotification.Error }).subscribe()
-                        throw Error(err)
+                        return throwError(err)
                     })
                 );
         } else {
             return this.http.post<Gateway>(this.getUrl(), item)
                 .pipe(
-                    map(m => {
-                        this.notificationsService
-                            .show('Great! Gateway created successfully', { status: TuiNotification.Success }).subscribe()
-                        return m
-                    }),
+                    tap(() => this.notificationsService
+                        .show('Great! Gateway created successfully', { status: TuiNotification.Success }).subscribe()),
                     catchError((err) => {
                         this.notificationsService
                             .show(err.error.errors[0].msg, { status: TuiNotification.Error }).subscribe()
-                        throw Error(err)
+                        return throwError(err)
                     })
                 );
         }
@@ -64,15 +58,12 @@ export class GatewayService {
     delete(id: string) {
         return this.http.delete<Gateway>(this.getUrl() + '/' + id)
             .pipe(
-                map(m => {
-                    this.notificationsService
-                        .show('Great! Gateway deleted successfully', { status: TuiNotification.Success }).subscribe()
-                    return m
-                }),
+                tap(() => this.notificationsService
+                    .show('Great! Gateway deleted successfully', { status: TuiNotification.Success }).subscribe()),
                 catchError((err) => {
                     this.notificationsService
                         .show('Ups! Something wrong happens.', { status: TuiNotification.Error }).subscribe()
-                    throw Error(err)
+                    return throwError(err)
                 })
             );
     }

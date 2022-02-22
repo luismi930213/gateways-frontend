@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TuiDialogContext } from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Gateway } from 'src/app/_core/models/gateway';
 import { GatewayService } from 'src/app/_core/services/gateway.service';
 
@@ -11,9 +13,10 @@ import { GatewayService } from 'src/app/_core/services/gateway.service';
   styleUrls: ['./add.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+  destroy$ = new Subject();
 
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT)
@@ -46,9 +49,13 @@ export class AddComponent implements OnInit {
 
   submit() {
     this.service.save(this.form.value)
-      .subscribe(data => {
-        this.context.completeWith(data)
-      })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => this.context.completeWith(data))
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.unsubscribe();
   }
 
 }

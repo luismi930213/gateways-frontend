@@ -60,11 +60,6 @@ export class ListComponent implements OnDestroy {
   }
 
   showDetailsDialog(item: Gateway) {
-    this.service.get(item.id).subscribe(data => {
-      console.log(data);
-      return data
-    })
-
     this.dialogDetails(item)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.service.get(item.id));
@@ -72,6 +67,6 @@ export class ListComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next()
-    this.destroy$.unsubscribe
+    this.destroy$.unsubscribe()
   }
 }

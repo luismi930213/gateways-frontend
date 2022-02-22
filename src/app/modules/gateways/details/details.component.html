@@ -7,4 +7,39 @@
         <h3>IP</h3>
         <label tuiLabel>{{item.ip}}</label>
     </div>
+    <div class="tui-col_12">
+        <h3>Peripherals</h3>
+        <table tuiTable [columns]="columns">
+            <thead>
+                <tr tuiThGroup>
+                    <th *tuiHead="'no'" tuiTh [sorter]="null">#</th>
+                    <th *tuiHead="'vendor'" tuiTh [sorter]="null">Vendor</th>
+                    <th *tuiHead="'status'" tuiTh [sorter]="null">Status</th>
+                    <th *tuiHead="'createdAt'" tuiTh [sorter]="null">Created date</th>
+                    <th *tuiHead="'updatedAt'" tuiTh [sorter]="null">Last update</th>
+                </tr>
+            </thead>
+            <ng-container *ngIf="item.Peripherals">
+                <tbody tuiTbody [data]="item.Peripherals">
+                    <tr>
+                        <td *ngIf="!item.Peripherals.length" colspan="5">
+                            <h4>No peripherals found!</h4>
+                        </td>
+                    </tr>
+                    <tr *tuiRow="let peripheral of item.Peripherals; let index = index" tuiTr>
+                        <td *tuiCell="'no'" tuiTd>{{index + 1}}</td>
+                        <td *tuiCell="'vendor'" tuiTd>{{peripheral.vendor}}</td>
+                        <td *tuiCell="'status'" tuiTd>
+                            <tui-badge *ngIf="peripheral.status == 'online'" status="success" value="online"
+                                class="tui-space_right-2"></tui-badge>
+                            <tui-badge *ngIf="peripheral.status == 'offline'" status="neutral" value="offline"
+                                class="tui-space_right-2"></tui-badge>
+                        </td>
+                        <td *tuiCell="'createdAt'" tuiTd> {{peripheral.createdAt | date: 'dd/MM/yyyy HH:mm' }} </td>
+                        <td *tuiCell="'updatedAt'" tuiTd> {{peripheral.updatedAt | date: 'dd/MM/yyyy HH:mm' }} </td>
+                    </tr>
+                </tbody>
+            </ng-container>
+        </table>
+    </div>
 </div>
