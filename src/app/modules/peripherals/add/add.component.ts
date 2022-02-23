@@ -62,8 +62,6 @@ export class AddComponent implements OnInit, OnDestroy {
     this.service.save(obj)
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
-        console.log(data);
-
         this.context.completeWith(data)
       })
   }

@@ -7,8 +7,6 @@ import { PeripheralsRoutingModule } from './peripherals-routing.module';
 import {
   TuiBadgeModule,
   TuiDataListWrapperModule,
-  TuiFieldErrorModule,
-  TuiInputDateModule,
   TuiInputModule,
   TuiIslandModule,
   TuiSelectModule
@@ -42,9 +40,7 @@ import { GatewayService } from 'src/app/_core/services/gateway.service';
     TuiDataListWrapperModule,
     TuiTableModule,
     TuiIslandModule,
-    TuiInputDateModule,
     ReactiveFormsModule,
-    TuiFieldErrorModule,
     HttpClientModule,
     TuiBadgeModule
   ],
