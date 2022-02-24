@@ -3,7 +3,7 @@ This sample project is managing gateways - master devices that control multiple 
 This project was made with [Angular](https://angular.io/start) version 12.2.0.
 
 # Pre-requisites
-- Install [Angular CLI](https://github.com/angular/angular-cli) version 12.2.15
+- Install [Angular CLI](https://github.com/angular/angular-cli) version 12.2.15 or higher
 
 # Getting started
 - Clone the repository
